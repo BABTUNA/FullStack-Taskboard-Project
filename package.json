@@ -6,6 +6,14 @@
     "dev:client": "npm run dev --workspace client",
     "dev:server": "npm run dev --workspace server",
     "test": "npm test --workspaces --if-present",
-    "build": "npm run build --workspace client"
+    "build": "npm run build --workspace client",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint client/src server/src server/test"
+  },
+  "devDependencies": {
+    "eslint": "8.28.0",
+    "eslint-plugin-react": "7.31.11",
+    "prettier": "2.7.1"
   }
 }
