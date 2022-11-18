@@ -12,4 +12,12 @@ router.post('/register', async (request, response) => {
   }
 });
 
+router.post('/login', async (request, response) => {
+  try {
+    response.json(await auth.login(request.body));
+  } catch (error) {
+    response.status(401).json({ error: error.message });
+  }
+});
+
 module.exports = router;
