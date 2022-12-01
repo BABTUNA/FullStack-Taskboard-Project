@@ -15,4 +15,16 @@ router.post('/', async (request, response) => {
   response.status(201).json({ task });
 });
 
+router.put('/:id', async (request, response) => {
+  const task = await tasks.update(request.userId, request.params.id, request.body);
+  if (!task) return response.status(404).json({ error: 'Task not found' });
+  response.json({ task });
+});
+
+router.delete('/:id', async (request, response) => {
+  const removed = await tasks.remove(request.userId, request.params.id);
+  if (!removed) return response.status(404).json({ error: 'Task not found' });
+  response.status(204).end();
+});
+
 module.exports = router;
