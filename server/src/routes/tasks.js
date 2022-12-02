@@ -6,7 +6,8 @@ const router = express.Router();
 router.use(authenticate);
 
 router.get('/', async (request, response) => {
-  response.json({ tasks: await tasks.list(request.userId) });
+  const items = await tasks.list(request.userId, request.query);
+  response.json({ tasks: items, page: Number(request.query.page) || 1 });
 });
 
 router.post('/', async (request, response) => {
