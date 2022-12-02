@@ -1,9 +1,23 @@
 const db = require('../db');
 
-async function list(ownerId) {
+async function list(ownerId, filters = {}) {
+  const page = Math.max(Number(filters.page) || 1, 1);
+  const limit = Math.min(Math.max(Number(filters.limit) || 20, 1), 100);
+  const values = [ownerId];
+  const where = ['owner_id = $1'];
+  if (filters.status) {
+    values.push(filters.status);
+    where.push(`status = $${values.length}`);
+  }
+  if (filters.search) {
+    values.push(`%${filters.search}%`);
+    where.push(`title ILIKE $${values.length}`);
+  }
+  values.push(limit, (page - 1) * limit);
   const result = await db.query(
-    'SELECT * FROM tasks WHERE owner_id = $1 ORDER BY created_at DESC',
-    [ownerId]
+    `SELECT * FROM tasks WHERE ${where.join(' AND ')}
+     ORDER BY created_at DESC LIMIT $${values.length - 1} OFFSET $${values.length}`,
+    values
   );
   return result.rows;
 }
