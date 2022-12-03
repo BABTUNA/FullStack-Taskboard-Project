@@ -31,6 +31,14 @@ async function create(ownerId, task) {
   return result.rows[0];
 }
 
+async function findOwned(ownerId, id) {
+  const result = await db.query(
+    'SELECT * FROM tasks WHERE id = $1 AND owner_id = $2',
+    [id, ownerId]
+  );
+  return result.rows[0];
+}
+
 async function update(ownerId, id, changes) {
   const result = await db.query(
     `UPDATE tasks SET title = $1, description = $2, status = $3,
@@ -50,4 +58,4 @@ async function remove(ownerId, id) {
   return result.rowCount > 0;
 }
 
-module.exports = { create, list, remove, update };
+module.exports = { create, findOwned, list, remove, update };
