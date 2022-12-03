@@ -10,6 +10,12 @@ router.get('/', async (request, response) => {
   response.json({ tasks: items, page: Number(request.query.page) || 1 });
 });
 
+router.get('/:id', async (request, response) => {
+  const task = await tasks.findOwned(request.userId, request.params.id);
+  if (!task) return response.status(404).json({ error: 'Task not found' });
+  response.json({ task });
+});
+
 router.post('/', async (request, response) => {
   if (!request.body.title) return response.status(400).json({ error: 'Title is required' });
   const task = await tasks.create(request.userId, request.body);
