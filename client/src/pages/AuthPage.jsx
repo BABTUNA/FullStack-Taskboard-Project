@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../auth/AuthContext';
 
 export default function AuthPage({ mode }) {
   const navigate = useNavigate();
+  const { authenticate } = useAuth();
   const [form, setForm] = useState({ name: '', email: '', password: '' });
   const isRegister = mode === 'register';
 
@@ -10,9 +12,10 @@ export default function AuthPage({ mode }) {
     setForm({ ...form, [event.target.name]: event.target.value });
   }
 
-  function submit(event) {
+  async function submit(event) {
     event.preventDefault();
-    navigate('/tasks', { state: { mode, form } });
+    await authenticate(mode, form);
+    navigate('/tasks');
   }
 
   return <main className="auth-panel">
