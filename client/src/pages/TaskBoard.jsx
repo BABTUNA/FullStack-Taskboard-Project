@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '../api';
 import TaskCard from '../components/TaskCard';
+import TaskForm from '../components/TaskForm';
 
 const columns = [['todo', 'To do'], ['doing', 'In progress'], ['done', 'Done']];
 
@@ -10,6 +11,13 @@ export default function TaskBoard() {
 
   useEffect(() => { api('/tasks').then((data) => setTasks(data.tasks)); }, []);
 
+  async function save(values) {
+    const path = editing.id ? `/tasks/${editing.id}` : '/tasks';
+    const result = await api(path, { method: editing.id ? 'PUT' : 'POST', body: JSON.stringify(values) });
+    setTasks(editing.id ? tasks.map((task) => task.id === editing.id ? result.task : task) : [result.task, ...tasks]);
+    setEditing(null);
+  }
+
   return <main>
     <div className="board-heading"><h1>My tasks</h1><button onClick={() => setEditing({})}>New task</button></div>
     <section className="board">
@@ -18,6 +26,6 @@ export default function TaskBoard() {
         {tasks.filter((task) => task.status === status).map((task) => <TaskCard key={task.id} task={task} onEdit={setEditing} />)}
       </div>)}
     </section>
-    {editing && <p className="notice">Task editor coming next.</p>}
+    {editing && <TaskForm task={editing} onSave={save} onCancel={() => setEditing(null)} />}
   </main>;
 }

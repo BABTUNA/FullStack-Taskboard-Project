@@ -17,3 +17,5 @@ button { padding: .65rem 1rem; border: 0; border-radius: 4px; color: white; back
 .task-card { margin-bottom: .75rem; padding: 1rem; border-radius: 5px; background: white; box-shadow: 0 1px 3px #bbc2d0; }
 .plain { padding: 0; color: #172033; background: none; font-weight: bold; text-align: left; }
 .notice { padding: 1rem; background: #fff5c7; }
+.task-form { position: fixed; inset: 15% 30%; padding: 1.5rem; border-radius: 6px; background: white; box-shadow: 0 8px 32px #66708566; }
+.secondary { color: #25324b; background: #dce1ea; }
