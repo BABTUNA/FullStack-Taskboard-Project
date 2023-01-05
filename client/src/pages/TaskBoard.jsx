@@ -18,12 +18,19 @@ export default function TaskBoard() {
     setEditing(null);
   }
 
+  async function move(task, status) {
+    const result = await api(`/tasks/${task.id}`, {
+      method: 'PUT', body: JSON.stringify({ ...task, status }),
+    });
+    setTasks(tasks.map((item) => item.id === task.id ? result.task : item));
+  }
+
   return <main>
     <div className="board-heading"><h1>My tasks</h1><button onClick={() => setEditing({})}>New task</button></div>
     <section className="board">
       {columns.map(([status, label]) => <div className="column" key={status}>
         <h2>{label}</h2>
-        {tasks.filter((task) => task.status === status).map((task) => <TaskCard key={task.id} task={task} onEdit={setEditing} />)}
+        {tasks.filter((task) => task.status === status).map((task) => <TaskCard key={task.id} task={task} onEdit={setEditing} onMove={move} />)}
       </div>)}
     </section>
     {editing && <TaskForm task={editing} onSave={save} onCancel={() => setEditing(null)} />}
