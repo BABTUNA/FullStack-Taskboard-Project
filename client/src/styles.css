@@ -19,3 +19,4 @@ button { padding: .65rem 1rem; border: 0; border-radius: 4px; color: white; back
 .notice { padding: 1rem; background: #fff5c7; }
 .task-form { position: fixed; inset: 15% 30%; padding: 1.5rem; border-radius: 6px; background: white; box-shadow: 0 8px 32px #66708566; }
 .secondary { color: #25324b; background: #dce1ea; }
+.move { display: block; margin-top: .75rem; padding: .35rem .5rem; font-size: .8rem; }
